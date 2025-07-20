@@ -1,0 +1,238 @@
+{% extends 'colleges/base.html' %}
+
+{% block title %}{{ college.official_name }} - EngineeringMitra{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <h2 class="text-4xl font-extrabold text-indigo-700 mb-4">
+            <i class="fas fa-school mr-3 text-indigo-500"></i>{{ college.official_name }}
+        </h2>
+        {% if college.short_name %}
+            <p class="text-indigo-500 text-xl mb-4 ml-10">{{ college.short_name }}</p>
+        {% endif %}
+        
+        {# Display key information in the requested concise format #}
+        <div class="space-y-2 mb-6 ml-10 text-lg text-gray-700">
+            <p><i class="fas fa-map-marker-alt mr-3 text-indigo-500"></i> <strong>City:</strong> {{ college.city }}{% if college.city and college.state %}, {% endif %}{{ college.state }}</p>
+            
+            {% if college.latest_nirf %}
+                <p><i class="fas fa-trophy mr-3 text-indigo-500"></i> <strong>Rank:</strong> #{{ college.latest_nirf.engineering_rank }}</p>
+                <p><i class="fas fa-chart-bar mr-3 text-indigo-500"></i> <strong>Score:</strong> {{ college.latest_nirf.overall_score|floatformat:2 }}</p>
+            {% else %}
+                <p><i class="fas fa-trophy mr-3 text-indigo-500"></i> <strong>Rank:</strong> N/A</p>
+                <p><i class="fas fa-chart-bar mr-3 text-indigo-500"></i> <strong>Score:</strong> N/A</p>
+            {% endif %}
+            
+            <p><i class="fas fa-link mr-3 text-indigo-500"></i> <strong>Official Website:</strong> 
+                {% if college.official_website %}
+                    <a href="{{ college.official_website }}" target="_blank" class="text-indigo-600 hover:underline">{{ college.official_website }}</a>
+                {% else %}N/A{% endif %}
+            </p>
+            
+            <p><i class="fas fa-graduation-cap mr-3 text-indigo-500"></i> <strong>Ownership:</strong> 
+                {% if college.ownership_type %}{{ college.get_ownership_type_display }}{% else %}N/A{% endif %}
+            </p>
+        </div>
+
+        {# Explore More section #}
+        <div class="flex items-center space-x-4 mb-8 ml-10">
+            <span class="text-lg font-semibold text-gray-800">📈 Explore More:</span>
+            <a href="{% url 'ai_recommendation' %}" class="inline-flex items-center bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full hover:bg-indigo-200 transition-colors duration-200">
+                <i class="fas fa-robot mr-2"></i> AI Advisor Chat
+            </a>
+            {% if college.official_website %}
+                <a href="{{ college.official_website }}" target="_blank" class="inline-flex items-center bg-green-100 text-green-700 px-4 py-2 rounded-full hover:bg-green-200 transition-colors duration-200">
+                    <i class="fas fa-external-link-alt mr-2"></i> Official Site
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700">
+            <div>
+                <p class="mb-2"><i class="fas fa-home mr-2 text-gray-500"></i> <strong>Address:</strong> 
+                    {% if college.address %}{{ college.address }}{% else %}N/A{% endif %}
+                    {% if college.city and not college.address %}{{ college.city }}{% elif college.city %}, {{ college.city }}{% endif %}
+                    {% if college.state and not college.city %}{{ college.state }}{% elif college.state %}, {{ college.state }}{% endif %}
+                    {% if college.pincode %} - {{ college.pincode }}{% endif %}
+                </p>
+                <p class="mb-2"><i class="fas fa-envelope mr-2 text-gray-500"></i> <strong>Email:</strong> 
+                    {% if college.email %}{{ college.email }}{% else %}N/A{% endif %}
+                </p>
+                <p class="mb-2"><i class="fas fa-phone mr-2 text-gray-500"></i> <strong>Phone:</strong> 
+                    {% if college.phone_number %}{{ college.phone_number }}{% else %}N/A{% endif %}
+                </p>
+                <p class="mb-2"><i class="fas fa-calendar-alt mr-2 text-gray-500"></i> <strong>Established:</strong> 
+                    {% if college.established_year %}{{ college.established_year }}{% else %}N/A{% endif %}
+                </p>
+                <p class="mb-2"><i class="fas fa-ruler-combined mr-2 text-gray-500"></i> <strong>Campus Area:</strong> 
+                    {% if college.campus_area_acres %}{{ college.campus_area_acres }} acres{% else %}N/A{% endif %}
+                </p>
+            </div>
+            <div>
+                {% if college.description %}
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">About</h3>
+                    <p class="mb-4 text-gray-600 leading-relaxed">{{ college.description }}</p>
+                {% else %}
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">About</h3>
+                    <p class="mb-4 text-gray-600 leading-relaxed">No description available for this college.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Courses Offered Section -->
+    {% if college.collegecourse_set.exists %}
+    <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Courses Offered</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6">Course Name</th>
+                        <th class="py-3 px-6">Short Code</th>
+                        <th class="py-3 px-6">Intake Capacity</th>
+                        <th class="py-3 px-6">Fees Per Year (₹)</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm font-light">
+                    {% for college_course in college.collegecourse_set.all %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-3 px-6">{{ college_course.course.name }}</td>
+                        <td class="py-3 px-6">{{ college_course.course.short_code }}</td>
+                        <td class="py-3 px-6">{% if college_course.intake_capacity %}{{ college_course.intake_capacity }}{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if college_course.fees_per_year %}₹{{ college_course.fees_per_year|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Courses Offered</h3>
+        <p class="text-gray-600">No course information available for this college.</p>
+    </div>
+    {% endif %}
+
+    <!-- Placement Data Section -->
+    {% if college.placement_data.exists %}
+    <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Placement Data</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6">Year</th>
+                        <th class="py-3 px-6">Highest Package (LPA)</th>
+                        <th class="py-3 px-6">Average Package (LPA)</th>
+                        <th class="py-3 px-6">Median Package (LPA)</th>
+                        <th class="py-3 px-6">Placement %</th>
+                        <th class="py-3 px-6">Students Placed</th>
+                        <th class="py-3 px-6">Total Students</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm font-light">
+                    {% for placement in college.placement_data_sorted %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-3 px-6">{{ placement.year }}</td>
+                        <td class="py-3 px-6">{% if placement.highest_package_lpa %}₹{{ placement.highest_package_lpa|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if placement.average_package_lpa %}₹{{ placement.average_package_lpa|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if placement.median_package_lpa %}₹{{ placement.median_package_lpa|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if placement.placement_percentage %}{{ placement.placement_percentage|floatformat:2 }}%{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if placement.students_placed %}{{ placement.students_placed }}{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if placement.total_students %}{{ placement.total_students }}{% else %}N/A{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Placement Data</h3>
+        <p class="text-gray-600">No placement data available for this college.</p>
+    </div>
+    {% endif %}
+
+    <!-- NIRF Ranking Section -->
+    {% if college.nirf_rankings.exists %}
+    <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">NIRF Rankings</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6">Year</th>
+                        <th class="py-3 px-6">Overall Rank</th>
+                        <th class="py-3 px-6">Overall Score</th>
+                        <th class="py-3 px-6">Engineering Rank</th>
+                        <th class="py-3 px-6">Engineering Score</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm font-light">
+                    {% for ranking in college.nirf_rankings_sorted %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-3 px-6">{{ ranking.year }}</td>
+                        <td class="py-3 px-6">{% if ranking.overall_rank %}#{{ ranking.overall_rank }}{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if ranking.overall_score %}{{ ranking.overall_score|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if ranking.engineering_rank %}#{{ ranking.engineering_rank }}{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if ranking.engineering_score %}{{ ranking.engineering_score|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">NIRF Rankings</h3>
+        <p class="text-gray-600">No NIRF ranking data available for this college.</p>
+    </div>
+    {% endif %}
+
+    <!-- JEE Cutoff Section -->
+    {% if college.jee_cutoffs.exists %}
+    <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">JEE Cutoff Ranks</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6">Year</th>
+                        <th class="py-3 px-6">Course</th>
+                        <th class="py-3 px-6">Category</th>
+                        <th class="py-3 px-6">Gender</th>
+                        <th class="py-3 px-6">Opening Rank</th>
+                        <th class="py-3 px-6">Closing Rank</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm font-light">
+                    {% for cutoff in college.jee_cutoffs.all %} {# No need for sorting here unless specifically required #}
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-3 px-6">{{ cutoff.year }}</td>
+                        <td class="py-3 px-6">{{ cutoff.course.short_code }}</td>
+                        <td class="py-3 px-6">{% if cutoff.category %}{{ cutoff.category }}{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if cutoff.gender %}{{ cutoff.gender }}{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if cutoff.opening_rank %}{{ cutoff.opening_rank }}{% else %}N/A{% endif %}</td>
+                        <td class="py-3 px-6">{% if cutoff.closing_rank %}{{ cutoff.closing_rank }}{% else %}N/A{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">JEE Cutoff Ranks</h3>
+        <p class="text-gray-600">No JEE cutoff data available for this college.</p>
+    </div>
+    {% endif %}
+
+    <div class="text-center mt-8">
+        <a href="{% url 'college_list' %}" class="inline-block bg-gray-200 text-gray-800 px-6 py-3 rounded-full hover:bg-gray-300 transition-colors duration-200 font-semibold shadow-md">
+            <i class="fas fa-arrow-left mr-2"></i> Back to College List
+        </a>
+    </div>
+</div>
+{% endblock %}

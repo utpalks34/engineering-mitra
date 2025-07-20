@@ -1,0 +1,63 @@
+<div id="college-list-container"> {# This container is important for HTMX to target #}
+    {% if colleges %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for college in colleges %}
+                <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-2">{{ college.official_name }}</h3>
+                    <p class="text-gray-600 mb-1"><i class="fas fa-map-marker-alt mr-2 text-indigo-500"></i>{{ college.city }}, {{ college.state }}</p>
+                    <p class="text-gray-600 mb-1"><i class="fas fa-university mr-2 text-indigo-500"></i>{{ college.get_ownership_type_display }}</p>
+
+                    {% if college.latest_nirf %}
+                        <p class="text-gray-600 mb-1"><i class="fas fa-award mr-2 text-indigo-500"></i>NIRF Rank ({{ college.latest_nirf.year }}): #{{ college.latest_nirf.engineering_rank }}</p>
+                    {% else %}
+                        <p class="text-gray-600 mb-1"><i class="fas fa-award mr-2 text-indigo-500"></i>NIRF Rank: N/A</p>
+                    {% endif %}
+
+                    {% if college.latest_placement and college.latest_placement.average_package_lpa %}
+                        <p class="text-600 mb-4"><i class="fas fa-briefcase mr-2 text-indigo-500"></i>Avg. Package ({{ college.latest_placement.year }}): {{ college.latest_placement.average_package_lpa }} LPA</p>
+                    {% else %}
+                        <p class="text-gray-600 mb-4"><i class="fas fa-briefcase mr-2 text-indigo-500"></i>Avg. Package: N/A</p>
+                    {% endif %}
+
+                    <a href="{% url 'college_detail' college.id %}" class="mt-auto bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 transition-colors duration-200 text-center">View Details</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        {# --- Pagination Controls --- #}
+        <div class="flex justify-center mt-8 space-x-2"
+             hx-target="#college-list-container" {# Target the same container #}
+             hx-swap="innerHTML" {# Swap its inner HTML #}
+             hx-indicator="#loading-indicator"> {# Show loading indicator #}
+
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" {# SIMPLIFIED HERE #}
+                   class="px-4 py-2 border border-indigo-300 rounded-md text-indigo-700 hover:bg-indigo-500 hover:text-white transition-colors duration-200"
+                   hx-get="{% url 'college_list_partial' %}"
+                   hx-vals='{"page": "{{ page_obj.previous_page_number }}"}'
+                   hx-include="[name='search_query'], [name='state'], [name='ownership_type'], [name='course'], [name='min_avg_package']"
+                   hx-indicator="#loading-indicator">Previous</a>
+            {% else %}
+                <span class="px-4 py-2 border border-gray-300 rounded-md text-gray-400 cursor-not-allowed">Previous</span>
+            {% endif %}
+
+            <span class="px-4 py-2 border border-gray-300 rounded-md bg-indigo-500 text-white">
+                Page {{ page_obj.number }} of {{ page_obj.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" {# SIMPLIFIED HERE #}
+                   class="px-4 py-2 border border-indigo-300 rounded-md text-indigo-700 hover:bg-indigo-500 hover:text-white transition-colors duration-200"
+                   hx-get="{% url 'college_list_partial' %}"
+                   hx-vals='{"page": "{{ page_obj.next_page_number }}"}'
+                   hx-include="[name='search_query'], [name='state'], [name='ownership_type'], [name='course'], [name='min_avg_package']"
+                   hx-indicator="#loading-indicator">Next</a>
+            {% else %}
+                <span class="px-4 py-2 border border-gray-300 rounded-md text-gray-400 cursor-not-allowed">Next</span>
+            {% endif %}
+        </div>
+    {% else %}
+        <p class="text-center text-gray-500 text-lg py-10">No colleges found matching your criteria.</p>
+    {% endif %}
+</div>
+    

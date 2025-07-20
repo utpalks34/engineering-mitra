@@ -1,0 +1,124 @@
+{% extends 'colleges/base.html' %}
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 overflow-hidden">
+  <!-- Background Pattern -->
+  <div class="absolute inset-0 opacity-5">
+    <div class="absolute top-20 left-20 w-32 h-32 bg-blue-500 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-20 right-20 w-40 h-40 bg-purple-500 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-500 rounded-full blur-3xl"></div>
+  </div>
+  
+  <div class="relative max-w-7xl mx-auto px-6 py-20 text-center">
+    
+
+    
+    <!-- Main Heading with Gradient Text -->
+    <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight mt-16">
+      <span class="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        Discover Engineering
+      </span>
+      <br>
+      <span class="text-gray-900">Colleges</span>
+    </h1>
+    
+    <!-- Subtitle with Better Typography -->
+    <p class="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed font-light">
+      Find your dream engineering college with 
+      <span class="font-semibold text-blue-600">AI-powered insights</span> 
+      and <span class="font-semibold text-purple-600">verified data</span>.
+    </p>
+    
+    <!-- Enhanced Search Bar -->
+    <form action="{% url 'college_list' %}" method="GET" class="max-w-2xl mx-auto mb-12">
+      <div class="relative bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+        <div class="flex flex-col sm:flex-row">
+          <div class="relative flex-1">
+            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input
+              type="text"
+              name="search_query"
+              placeholder="Search by college name, city, or state..."
+              class="w-full pl-12 pr-4 py-4 text-lg border-0 focus:outline-none focus:ring-0 placeholder-gray-400"
+            />
+          </div>
+          <button
+            type="submit"
+            class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 active:scale-95"
+          >
+            <span class="flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              Search
+            </span>
+          </button>
+        </div>
+      </div>
+    </form>
+    
+    <!-- Enhanced Action Buttons -->
+    <div class="flex flex-col sm:flex-row justify-center gap-6 max-w-md mx-auto">
+      <a
+        href="{% url 'college_list' %}"
+        class="group relative overflow-hidden bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg active:scale-95"
+      >
+        <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+        <span class="relative flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1"></path>
+          </svg>
+          Explore Colleges
+        </span>
+      </a>
+      
+      <a
+        href="{% url 'ai_recommendation' %}"
+        class="group relative overflow-hidden bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg active:scale-95"
+      >
+        <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+        <span class="relative flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+          </svg>
+          Ask AI Advisor
+        </span>
+      </a>
+    </div>
+    
+    <!-- Trust Indicators -->
+    <div class="mt-16 flex flex-wrap justify-center items-center gap-8 text-sm text-gray-500">
+      <div class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+        </svg>
+        <span>Verified Data</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+        </svg>
+        <span>AI-Powered</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path>
+        </svg>
+        <span>Trusted by Students</span>
+      </div>
+    </div>
+    
+    <!-- Engineering Quote with Enhanced Styling -->
+    <div class="mt-16 relative">
+      <div class="absolute -top-4 -left-4 text-6xl text-blue-200 font-serif">"</div>
+      <blockquote class="text-xl md:text-2xl text-gray-700 italic font-medium leading-relaxed max-w-4xl mx-auto relative z-10">
+        Scientists dream about doing great things. Engineers do them.
+      </blockquote>
+      <cite class="block mt-4 text-sm md:text-base text-gray-600 font-semibold">— James A. Michener</cite>
+      <div class="absolute -bottom-4 -right-4 text-6xl text-purple-200 font-serif">"</div>
+    </div>
+  </div>
+</section>
+{% endblock %}

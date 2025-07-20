@@ -1,0 +1,107 @@
+{% extends 'colleges/base.html' %}
+
+{% block title %}All Engineering Colleges - EngineeringMitra{% endblock %} {# This closes the title block #}
+
+{% block content %} {# This is the main content block, which must be closed at the very end #}
+<div class="container mx-auto p-6">
+    <h2 class="text-4xl font-extrabold text-gray-800 mb-8 text-center">
+        Explore All Engineering Colleges
+    </h2>
+<!-- Search and Filter Section -->
+<div class="bg-white p-6 rounded-xl shadow-lg mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Search Input -->
+        <div class="col-span-full mb-4">
+            <input type="search" name="search_query" placeholder="Search by College Name, City, or State..."
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    hx-get="{% url 'college_list_partial' %}"
+                    hx-trigger="keyup changed delay:500ms, search"
+                    hx-target="#college-list-container"
+                    hx-swap="innerHTML" {# CHANGED HERE #}
+                    hx-indicator="#loading-indicator"
+                    value="{{ request.GET.search_query|default:'' }}">
+        </div>
+
+        <!-- Filter: State -->
+        <div>
+            <label for="state_filter" class="block text-sm font-medium text-gray-700 mb-1">State:</label>
+            <select id="state_filter" name="state"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    hx-get="{% url 'college_list_partial' %}"
+                    hx-trigger="change"
+                    hx-target="#college-list-container"
+                    hx-swap="innerHTML" {# CHANGED HERE #}
+                    hx-indicator="#loading-indicator">
+                <option value="">All States</option>
+                {% for state_name in states %}
+                    <option value="{{ state_name }}" {% if state_name == request.GET.state %}selected{% endif %}>{{ state_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Filter: Ownership Type -->
+        <div>
+            <label for="ownership_filter" class="block text-sm font-medium text-gray-700 mb-1">Ownership:</label>
+            <select id="ownership_filter" name="ownership_type"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    hx-get="{% url 'college_list_partial' %}"
+                    hx-trigger="change"
+                    hx-target="#college-list-container"
+                    hx-swap="innerHTML" {# CHANGED HERE #}
+                    hx-indicator="#loading-indicator">
+                <option value="">All Types</option>
+                {% for value, label in ownership_types %}
+                    <option value="{{ value }}" {% if value == request.GET.ownership_type %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Filter: Course -->
+        <div>
+            <label for="course_filter" class="block text-sm font-medium text-gray-700 mb-1">Course:</label>
+            <select id="course_filter" name="course"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    hx-get="{% url 'college_list_partial' %}"
+                    hx-trigger="change"
+                    hx-target="#college-list-container"
+                    hx-swap="innerHTML" {# CHANGED HERE #}
+                    hx-indicator="#loading-indicator">
+                <option value="">All Courses</option>
+                {% for course_obj in courses %}
+                    <option value="{{ course_obj.short_code }}" {% if course_obj.short_code == request.GET.course %}selected{% endif %}>{{ course_obj.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Filter: Min Avg Package -->
+        <div>
+            <label for="min_avg_package" class="block text-sm font-medium text-gray-700 mb-1">Min Avg. Package (LPA):</label>
+            <input type="number" id="min_avg_package" name="min_avg_package"
+                    value="{{ request.GET.min_avg_package|default:'' }}"
+                    placeholder="e.g., 8.0" step="0.1"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    hx-get="{% url 'college_list_partial' %}"
+                    hx-trigger="keyup changed delay:500ms, search"
+                    hx-target="#college-list-container"
+                    hx-swap="innerHTML" {# CHANGED HERE #}
+                    hx-indicator="#loading-indicator">
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loading-indicator" class="htmx-indicator mt-4 text-center text-indigo-600 font-semibold">
+        <i class="fas fa-spinner fa-spin mr-2"></i> Loading colleges...
+    </div>
+</div>
+
+<!-- College List Container (This part will be swapped by HTMX) -->
+<div id="college-list-container">
+    {% include 'colleges/college_cards.html' %} {# This will be the partial template #}
+</div>
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- HTMX CDN -->
+<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-qcTTai3FrgFg1FtquLfhvpGydnvtwqPjFRzOoHzhwPRYGqEM7Re8pCugwm/OG5" crossorigin="anonymous"></script>
+{% endblock %} {# This closes the main content block #}

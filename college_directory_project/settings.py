@@ -24,10 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e!-cl65!w-^yvbv6+9kb6cny9cqon8*7$acf7+=%wijrcws=4j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG_VALUE', 'False') == 'True'
+DEBUG = True
 
-ALLOWED_HOSTS = ['engineering-mitra.onrender.com', '.render.com']
-CSRF_TRUSTED_ORIGINS = ['https://engineering-mitra.onrender.com'] 
+
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-e!-cl65!w-^yvbv6+9kb6cny9cqon8*7$acf7+=%wijrcws=4j') 
 # Application definition
@@ -77,12 +76,16 @@ WSGI_APPLICATION = 'college_directory_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://engineeringmitra_user:SXBJBqoKFiND324E9lEyCFrjejzsTOKB@dpg-d20fim7gi27c73cij24g-a.oregon-postgres.render.com/engineeringmitra',
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'engineeringmitradb',          # Your PostgreSQL DB name
+        'USER': 'engineeringmitrauser',        # Your PostgreSQL username
+        'PASSWORD': '18nov2k17nihut2',         # Your PostgreSQL password
+        'HOST': 'localhost',                   # Usually 'localhost' for local DB
+        'PORT': '5432',                        # Default PostgreSQL port
+    }
 }
+
 
 
 # Password validation
@@ -119,8 +122,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

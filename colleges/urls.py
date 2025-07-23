@@ -1,9 +1,10 @@
-from django.urls import path
+from django.urls import path,include
 from . import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    
     path('list/', views.college_list, name='college_list'),
     path('list/partial/', views.college_list, name='college_list_partial'),  # For HTMX
     
@@ -18,8 +19,8 @@ urlpatterns = [
     
     # Password Change Flow
     path('password_change/', auth_views.PasswordChangeView.as_view(
-        template_name='colleges/registration/password_change_form.html'), name='password_change'),
+    template_name='colleges/registration/password_change_form.html'), name='password_change'),
     
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(
-        template_name='colleges/registration/password_change_done.html'), name='password_change_done'),
+    template_name='colleges/registration/password_change_done.html'), name='password_change_done'),
 ]

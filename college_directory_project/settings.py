@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-e!-cl65!w-^yvbv6+9kb6cny9cqon8*7$acf7+=%wijrcws=4j
 DEBUG = os.environ.get('DEBUG_VALUE', 'False') == 'True'
 
 ALLOWED_HOSTS = ['engineering-mitra.onrender.com', '.render.com']
-
 CSRF_TRUSTED_ORIGINS = ['https://engineering-mitra.onrender.com'] 
+
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-e!-cl65!w-^yvbv6+9kb6cny9cqon8*7$acf7+=%wijrcws=4j') 
 # Application definition
 
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'college_directory_project.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', 'postgresql://engineeringmitrauser:18nov2k17nihut2@localhost:5432/engineeringmitradb'),
+        default='postgresql://engineeringmitra_user:SXBJBqoKFiND324E9lEyCFrjejzsTOKB@dpg-d20fim7gi27c73cij24g-a.oregon-postgres.render.com/engineeringmitra',
         conn_max_age=600,
         ssl_require=True
     )

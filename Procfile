@@ -1,0 +1,1 @@
+web: gunicorn college_directory_project.wsgi:application

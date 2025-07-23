@@ -24,11 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e!-cl65!w-^yvbv6+9kb6cny9cqon8*7$acf7+=%wijrcws=4j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG_VALUE', 'False') == 'True'
 
-ALLOWED_HOSTS = ['.render.com', 'engineering-mitra.onrender.com']
+ALLOWED_HOSTS = ['engineering-mitra.onrender.com', '.render.com']
 
-
+CSRF_TRUSTED_ORIGINS = ['https://engineering-mitra.onrender.com'] 
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-e!-cl65!w-^yvbv6+9kb6cny9cqon8*7$acf7+=%wijrcws=4j') 
 # Application definition
 
 INSTALLED_APPS = [

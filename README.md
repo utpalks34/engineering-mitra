@@ -3,6 +3,8 @@ EngineeringMitra is a full-stack web application designed to simplify college se
 This project showcases robust backend development, efficient data management, and practical AI integration to solve a real-world problem.
 <iframe title="vimeo-player" src="https://player.vimeo.com/video/1104794917?h=548c05864f" width="640" height="360" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"   allowfullscreen></iframe>
 
+
+
  Key Features
 Comprehensive College Directory: Detailed profiles, NIRF rankings, and placement data.
 
